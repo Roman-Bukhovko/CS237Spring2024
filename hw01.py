@@ -20,4 +20,18 @@ def answer(C,S):
     # output: A string with the probability of Annie winning in the form of an 
     # irreducible fraction in format A/B, where A — the numerator, and B — the 
     # denominator.
-    return "A/B"
+    if C==S:
+        A = 6 - C + 1
+    else:
+        max_val = max(C,S)
+        A = 6 - max_val
+    B = 6
+    
+    if A%2 == 0:
+        A = A//2
+        B = B//2
+    if A%3 == 0:
+        A = A//3
+        B = B//3
+
+    return f"{A}/{B}"
