@@ -24,7 +24,7 @@ def answer(C,S):
         A = 6 - C + 1
     else:
         max_val = max(C,S)
-        A = 6 - max_val
+        A = 6 - max_val + 1
     B = 6
     
     if A%2 == 0:
