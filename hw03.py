@@ -14,7 +14,32 @@
 # OUTPUT
 # The probability of hitting the intersection area if a dart is thrown randomly within the 10x10 region.
 # Your answer should be expressed as float number within the interval [0.0,1.0]
+
 def answer(x1,y1,x2,y2,x3,y3,x4,y4):
     probability = 0.0
+
+    # Calculate the (x, y) coordinates of the intersection rectangle's bottom-left and top-right corners
+    inter_x1 = max(x1, x3)
+    inter_y1 = max(y1, y3)
+    inter_x2 = min(x2, x4)
+    inter_y2 = min(y2, y4)
+    
+    # Calculate the width and height of the intersection rectangle
+    width = max(0, inter_x2 - inter_x1)
+    height = max(0, inter_y2 - inter_y1)
+
+     # Calculate the area of the intersection
+    inter_area = width * height
+
+    # Total area of the dartboard
+    total_area = 100
+
+    # Calculate the probability of hitting the intersection area
+    probability = inter_area / total_area
+
     return probability
 
+
+x1, y1, x2, y2, x3, y3, x4, y4 = 1, 1, 8, 8, 2, 2, 9, 9
+probability = answer(x1, y1, x2, y2, x3, y3, x4, y4)
+print(probability)
