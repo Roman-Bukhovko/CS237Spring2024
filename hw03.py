@@ -40,6 +40,6 @@ def answer(x1,y1,x2,y2,x3,y3,x4,y4):
     return probability
 
 
-x1, y1, x2, y2, x3, y3, x4, y4 = 1, 1, 8, 8, 2, 2, 9, 9
+x1, y1, x2, y2, x3, y3, x4, y4 = 0, 0, 5, 10, 5, 0, 10, 10
 probability = answer(x1, y1, x2, y2, x3, y3, x4, y4)
 print(probability)
