@@ -23,26 +23,37 @@ def answer(n, game):
 
         if action == "discard":
             deck[card] -= 1  # Discard the card
+            if deck[card] == 0:
+                del deck[card]  # Remove card from deck if count goes to zero
+
+        # Recalculate total after possible card removal
+        total_cards = sum(deck.values())
+        higher = sum(value for key, value in deck.items() if key > card)  # Sum of cards higher than current
+        lower = total_cards - higher - (deck[card] if card in deck else 0)  # Adjust lower calculation
 
         # Make predictions
-        if deck[card] > 0:  # Card is kept or not all copies discarded
+        if action == "discard" and card not in deck:
+            if higher == 0 and lower > 0:
+                predictions.append("lower")
+            elif lower == 0 and higher > 0:
+                predictions.append("higher")
+            else:
+                predictions.append("impossible")
+        elif action == "keep" or (action == "discard" and card in deck):
             if higher > lower:
                 predictions.append("higher")
             elif lower > higher:
                 predictions.append("lower")
             else:
                 predictions.append("impossible")
-        else:  # All copies of the card are discarded
-            if higher == 0:
-                predictions.append("lower")
-            elif lower == 0:
-                predictions.append("higher")
-            else:
-                predictions.append("impossible")
 
-        if action == "keep" and deck[card] < 1:
+        if action == "keep" and card not in deck:
             deck[card] = 1  # Return the card to the deck if it was previously discarded
 
     return predictions
 
+n = 3
+game = [(1, "keep"), (2, "discard"), (3, "keep"), (3, "discard"), (1, "keep"), (1, "discard")]
 
+output = answer(n, game)
+print(output)
