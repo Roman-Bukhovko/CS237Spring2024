@@ -52,8 +52,3 @@ def answer(n, game):
 
     return predictions
 
-n = 3
-game = [(1, "keep"), (2, "discard"), (3, "keep"), (3, "discard"), (1, "keep"), (1, "discard")]
-
-output = answer(n, game)
-print(output)
