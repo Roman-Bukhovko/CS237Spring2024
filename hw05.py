@@ -42,7 +42,7 @@ def answer(n, game):
         elif action == "keep" or (action == "discard" and card in deck):
             if higher > lower:
                 predictions.append("higher")
-            elif lower < higher:
+            elif lower > higher:
                 predictions.append("lower")
             else:
                 predictions.append("impossible")
