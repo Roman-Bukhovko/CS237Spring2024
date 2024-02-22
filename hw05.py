@@ -21,9 +21,6 @@ def answer(n, game):
         if action == "discard" and value in deck:
             deck.remove(value)  # Card is removed from the deck if discarded
 
-        if i != len(game) - 1:
-            # Predict only if it's not the last draw, as the last draw prediction is handled separately
-            next_value = game[i+1][0]  # Peek at the next card value for logic handling, not for prediction
         higher = sum(1 for card in deck if card > value)
         lower = sum(1 for card in deck if card < value)
 
@@ -38,5 +35,11 @@ def answer(n, game):
         # For "keep" action, ensure the deck is correctly managed
         if action == "keep" and value not in deck:
             deck.append(value)  # Add back the kept card if it was not in the deck
-
+            
     return predictions
+
+n = 3
+game = [(1, "keep"), (2, "discard"), (3, "keep"), (3, "discard"), (1, "keep"), (1, "discard")]
+
+output = answer(n, game)
+print(output)
