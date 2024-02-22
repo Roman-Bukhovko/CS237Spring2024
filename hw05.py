@@ -14,40 +14,29 @@
 
 def answer(n, game):
     predictions = []
-    deck = {i: 1 for i in range(1, n+1)}  # Initialize deck with all cards
+    deck = [i for i in range(1, n+1)]  # Initialize the deck with cards numbered from 1 to n
 
-    for i, (card, action) in enumerate(game):
-        total_cards = sum(deck.values())  # Total cards available after each action
-        higher = sum(value for key, value in deck.items() if key > card)  # Sum of cards higher than current
-        lower = total_cards - higher - deck[card]  # Sum of cards lower than current
+    for i, (value, action) in enumerate(game):
+        # If the card is kept, no need to alter the deck for prediction purposes
+        if action == "discard" and value in deck:
+            deck.remove(value)  # Card is removed from the deck if discarded
 
-        if action == "discard":
-            deck[card] -= 1  # Discard the card
-            if deck[card] == 0:
-                del deck[card]  # Remove card from deck if count goes to zero
-
-        # Recalculate total after possible card removal
-        total_cards = sum(deck.values())
-        higher = sum(value for key, value in deck.items() if key > card)  # Sum of cards higher than current
-        lower = total_cards - higher - (deck[card] if card in deck else 0)  # Adjust lower calculation
+        if i != len(game) - 1:
+            # Predict only if it's not the last draw, as the last draw prediction is handled separately
+            next_value = game[i+1][0]  # Peek at the next card value for logic handling, not for prediction
+        higher = sum(1 for card in deck if card > value)
+        lower = sum(1 for card in deck if card < value)
 
         # Make predictions
-        if action == "discard" and card not in deck:
-            if higher == 0 and lower > 0:
-                predictions.append("lower")
-            elif lower == 0 and higher > 0:
-                predictions.append("higher")
-            else:
-                predictions.append("impossible")
-        elif action == "keep" or (action == "discard" and card in deck):
-            if higher > lower:
-                predictions.append("higher")
-            elif lower > higher:
-                predictions.append("lower")
-            else:
-                predictions.append("impossible")
+        if higher > lower:
+            predictions.append("higher")
+        elif lower > higher:
+            predictions.append("lower")
+        else:
+            predictions.append("impossible")
 
-        if action == "keep" and card not in deck:
-            deck[card] = 1  # Return the card to the deck if it was previously discarded
+        # For "keep" action, ensure the deck is correctly managed
+        if action == "keep" and value not in deck:
+            deck.append(value)  # Add back the kept card if it was not in the deck
 
     return predictions
